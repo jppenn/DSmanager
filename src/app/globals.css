@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: hsl(220 13% 91%);
+  --color-input: hsl(220 13% 91%);
+  --color-ring: hsl(221 83% 53%);
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222 47% 11%);
+
+  --color-primary: hsl(221 83% 53%);
+  --color-primary-foreground: hsl(0 0% 100%);
+
+  --color-secondary: hsl(220 14% 96%);
+  --color-secondary-foreground: hsl(222 47% 11%);
+
+  --color-muted: hsl(220 14% 96%);
+  --color-muted-foreground: hsl(220 9% 46%);
+
+  --color-accent: hsl(220 14% 96%);
+  --color-accent-foreground: hsl(222 47% 11%);
+
+  --color-destructive: hsl(0 72% 51%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222 47% 11%);
+
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: hsl(220 20% 98%);
+    color: var(--color-foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Status badge color helpers */
+.badge-gray { background-color: hsl(220 14% 96%); color: hsl(220 9% 36%); }
+.badge-blue { background-color: hsl(214 95% 93%); color: hsl(221 83% 43%); }
+.badge-green { background-color: hsl(141 79% 92%); color: hsl(142 71% 29%); }
+.badge-amber { background-color: hsl(48 96% 89%); color: hsl(35 92% 33%); }
+.badge-red { background-color: hsl(0 93% 94%); color: hsl(0 72% 41%); }
+.badge-purple { background-color: hsl(270 95% 94%); color: hsl(271 81% 46%); }
+.badge-teal { background-color: hsl(167 85% 89%); color: hsl(175 84% 27%); }
