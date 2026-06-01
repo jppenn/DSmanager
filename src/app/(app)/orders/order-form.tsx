@@ -9,7 +9,11 @@ import { Field } from "@/components/ui/field";
 import { buttonVariants } from "@/components/ui/button";
 import { SubmitButton } from "@/components/submit-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineItemsEditor, type EditableItem } from "./line-items-editor";
+import {
+  LineItemsEditor,
+  type EditableItem,
+  type ProductOption,
+} from "./line-items-editor";
 import { CUSTOMER_ORDER_STATUSES, CUSTOMER_ORDER_STATUS_META } from "@/lib/constants";
 import type { Customer, CustomerOrder } from "@/lib/types/database";
 import type { FormState } from "./actions";
@@ -19,11 +23,13 @@ export function OrderForm({
   customers,
   order,
   items,
+  products,
   action,
 }: {
   customers: Pick<Customer, "id" | "name">[];
   order?: CustomerOrder;
   items?: EditableItem[];
+  products?: ProductOption[];
   action: (prev: FormState, fd: FormData) => Promise<FormState>;
 }) {
   const [state, formAction] = useActionState(action, {});
@@ -128,7 +134,7 @@ export function OrderForm({
           <CardTitle>Line items</CardTitle>
         </CardHeader>
         <CardContent>
-          <LineItemsEditor initial={items} />
+          <LineItemsEditor initial={items} products={products} />
         </CardContent>
       </Card>
 

@@ -13,7 +13,7 @@ export default async function EditOrderPage({
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: order }, { data: customers }, { data: items }] =
+  const [{ data: order }, { data: customers }, { data: items }, { data: products }] =
     await Promise.all([
       supabase.from("customer_orders").select("*").eq("id", id).single(),
       supabase.from("customers").select("id, name").order("name"),
@@ -22,6 +22,11 @@ export default async function EditOrderPage({
         .select("*")
         .eq("customer_order_id", id)
         .order("created_at"),
+      supabase
+        .from("products")
+        .select("id, internal_part_number, sku, description, unit_cost, sell_price")
+        .eq("is_active", true)
+        .order("internal_part_number", { nullsFirst: false }),
     ]);
 
   if (!order) notFound();
@@ -45,6 +50,7 @@ export default async function EditOrderPage({
         customers={customers ?? []}
         order={order}
         items={editableItems}
+        products={products ?? []}
         action={action}
       />
     </>

@@ -66,6 +66,22 @@ export const vendorSchema = z.object({
   is_active: z.coerce.boolean().default(true),
 });
 
+export const productSchema = z.object({
+  internal_part_number: optionalString,
+  sku: optionalString,
+  vendor_part_number: optionalString,
+  description: optionalString,
+  unit_cost: optionalNumber,
+  sell_price: optionalNumber,
+  vendor_id: z
+    .string()
+    .optional()
+    .transform((v) => (v === "" || v === undefined ? null : v)),
+  uom: optionalString,
+  notes: optionalString,
+  is_active: z.coerce.boolean().default(true),
+});
+
 export const customerOrderSchema = z.object({
   customer_id: z.string().uuid("Select a customer"),
   customer_po_number: optionalString,

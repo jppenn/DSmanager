@@ -16,6 +16,38 @@ export interface EditableItem {
   notes: string;
 }
 
+export interface ProductOption {
+  id: string;
+  internal_part_number: string | null;
+  sku: string | null;
+  description: string | null;
+  unit_cost: number | null;
+  sell_price: number | null;
+}
+
+function rowIsEmpty(it: EditableItem): boolean {
+  return (
+    !it.id &&
+    it.sku === "" &&
+    it.description === "" &&
+    it.unit_cost === "" &&
+    it.sell_price === "" &&
+    it.notes === "" &&
+    (Number(it.quantity) || 0) <= 1
+  );
+}
+
+function itemFromProduct(p: ProductOption): EditableItem {
+  return {
+    sku: p.sku ?? p.internal_part_number ?? "",
+    description: p.description ?? "",
+    quantity: 1,
+    unit_cost: p.unit_cost != null ? String(p.unit_cost) : "",
+    sell_price: p.sell_price != null ? String(p.sell_price) : "",
+    notes: "",
+  };
+}
+
 const blank = (): EditableItem => ({
   sku: "",
   description: "",
@@ -27,8 +59,10 @@ const blank = (): EditableItem => ({
 
 export function LineItemsEditor({
   initial,
+  products = [],
 }: {
   initial?: EditableItem[];
+  products?: ProductOption[];
 }) {
   const [items, setItems] = useState<EditableItem[]>(
     initial && initial.length > 0 ? initial : [blank()],
@@ -42,6 +76,19 @@ export function LineItemsEditor({
 
   function addRow() {
     setItems((prev) => [...prev, blank()]);
+  }
+
+  function addFromCatalog(productId: string) {
+    const product = products.find((p) => p.id === productId);
+    if (!product) return;
+    const row = itemFromProduct(product);
+    setItems((prev) => {
+      const lastIndex = prev.length - 1;
+      if (lastIndex >= 0 && rowIsEmpty(prev[lastIndex])) {
+        return prev.map((it, i) => (i === lastIndex ? row : it));
+      }
+      return [...prev, row];
+    });
   }
 
   function removeRow(index: number) {
@@ -165,9 +212,30 @@ export function LineItemsEditor({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Button type="button" variant="outline" size="sm" onClick={addRow}>
-          <Plus className="size-4" /> Add line item
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button type="button" variant="outline" size="sm" onClick={addRow}>
+            <Plus className="size-4" /> Add line item
+          </Button>
+          {products.length > 0 && (
+            <select
+              value=""
+              onChange={(e) => {
+                if (e.target.value) addFromCatalog(e.target.value);
+                e.target.value = "";
+              }}
+              className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <option value="">Add from catalog...</option>
+              {products.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {[p.internal_part_number ?? p.sku, p.description]
+                    .filter(Boolean)
+                    .join(" - ")}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
         <div className="flex gap-6 text-sm">
           <span className="text-muted-foreground">
             Revenue:{" "}

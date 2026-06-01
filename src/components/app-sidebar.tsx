@@ -12,6 +12,7 @@ import {
   BarChart3,
   Settings,
   Package,
+  Boxes,
 } from "lucide-react";
 import type { UserRole } from "@/lib/types/database";
 
@@ -19,6 +20,7 @@ const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/orders", label: "Customer Orders", icon: ShoppingCart },
   { href: "/purchase-orders", label: "Vendor POs", icon: Truck },
+  { href: "/products", label: "Products", icon: Boxes },
   { href: "/customers", label: "Customers", icon: Users },
   { href: "/vendors", label: "Vendors", icon: Building2 },
   { href: "/reports", label: "Reports", icon: BarChart3 },

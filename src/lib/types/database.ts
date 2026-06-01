@@ -72,6 +72,23 @@ export type Vendor = {
   updated_at: string;
 };
 
+export type Product = {
+  id: string;
+  internal_part_number: string | null;
+  sku: string | null;
+  vendor_part_number: string | null;
+  description: string | null;
+  unit_cost: number | null;
+  sell_price: number | null;
+  vendor_id: string | null;
+  uom: string | null;
+  notes: string | null;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type CustomerOrder = {
   id: string;
   order_number: string;
@@ -218,6 +235,7 @@ export type Database = {
       users: TableDef<User, [Rel<"vendor_id", "vendors">]>;
       customers: TableDef<Customer>;
       vendors: TableDef<Vendor>;
+      products: TableDef<Product, [Rel<"vendor_id", "vendors">]>;
       customer_orders: TableDef<
         CustomerOrder,
         [Rel<"customer_id", "customers">]
